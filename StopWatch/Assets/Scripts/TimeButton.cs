@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class TimeButton : MonoBehaviour
 {
+    public Text TimeText;
     public Text RecordedTime;
     public Button RecordStart;
     public Button RecordStop;
     public Button IntervalRecord;
+    public Button RecordClear;
     private string Timestring;
     private float time = 0f;
     private bool IsStarted;
@@ -19,6 +21,7 @@ public class TimeButton : MonoBehaviour
         RecordStart.onClick.AddListener(OnClickRecordStart);
         RecordStop.onClick.AddListener(OnClickRecordStop);
         IntervalRecord.onClick.AddListener(OnClickInervalRecord);
+        RecordClear.onClick.AddListener(OnClickRecordClear);
     }
 
     void Update()
@@ -26,21 +29,39 @@ public class TimeButton : MonoBehaviour
         if (IsStarted)
         {
             time += Time.deltaTime;
-            Timestring = Math.Round(time, 2).ToString();
-            RecordedTime.text = Timestring.Replace('.',':');
+            int minutes = (int)(time / 60);
+            int seconds = (int)(time % 60);
+            int milliseconds = (int)((time * 100) % 100);
+
+            TimeText.text = string.Format("{0:00}:{1:00}.{2:00}", minutes, seconds, milliseconds);
         }
     }
 
     private void OnClickRecordStart()
     {
         IsStarted = true;
+        ButtonActivateUpdate();
     }
     private void OnClickRecordStop()
     {
         IsStarted = false;
+        ButtonActivateUpdate();
     }
     private void OnClickInervalRecord()
     {
-        // Todo: 버튼을 눌렀을 때 현재 time을 기록해서 남기기
+        RecordedTime.text += "\n" + TimeText.text;
     }
+    private void OnClickRecordClear()
+    {
+        OnClickRecordStop();
+        time = 0f;
+        TimeText.text = "00:00.00";
+        RecordedTime.text = "";
+    }
+    private void ButtonActivateUpdate()
+    {
+        RecordStart.gameObject.SetActive(!IsStarted);
+        RecordStop.gameObject.SetActive(IsStarted);
+    }
+
 }
