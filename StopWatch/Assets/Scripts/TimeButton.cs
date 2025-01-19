@@ -4,24 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Phase
+{
+    start=0,
+    AfterPressingStartBtn,
+    AfterPressingRecordBtn,
+    AfterPressingStopBtn,
+}
+
 public class TimeButton : MonoBehaviour
 {
+    public Phase StopWatchPhase;
     public Text TimeText;
     public Text RecordedTime;
-    public Button RecordStart;
-    public Button RecordStop;
-    public Button IntervalRecord;
-    public Button RecordClear;
+    public Button LeftButton;
+    public Text LeftButtonTxt;
+    public Button RightButton;
+    public Text RightButtonTxt;
     private string Timestring;
     private float time = 0f;
     private bool IsStarted;
-
+    
     void Start()
     {
-        RecordStart.onClick.AddListener(OnClickRecordStart);
-        RecordStop.onClick.AddListener(OnClickRecordStop);
-        IntervalRecord.onClick.AddListener(OnClickInervalRecord);
-        RecordClear.onClick.AddListener(OnClickRecordClear);
+        
     }
 
     void Update()
@@ -37,15 +43,34 @@ public class TimeButton : MonoBehaviour
         }
     }
 
+    private void UpdateUI()
+    {
+        switch(StopWatchPhase)
+        {
+            case Phase.start:
+                RightButtonTxt.text = "Start";
+                LeftButtonTxt.text = "Record";
+                RightButton.onClick.RemoveAllListeners();
+                LeftButton.onClick.RemoveAllListeners();
+                RightButton.onClick.AddListener(OnClickRecordStart);
+                break;
+            case Phase.AfterPressingStartBtn:
+
+                break;
+            case Phase.AfterPressingRecordBtn:
+                break;
+            case Phase.AfterPressingStopBtn:
+                break;
+
+        }
+    }
     private void OnClickRecordStart()
     {
         IsStarted = true;
-        ButtonActivateUpdate();
     }
     private void OnClickRecordStop()
     {
         IsStarted = false;
-        ButtonActivateUpdate();
     }
     private void OnClickInervalRecord()
     {
@@ -58,10 +83,9 @@ public class TimeButton : MonoBehaviour
         TimeText.text = "00:00.00";
         RecordedTime.text = "";
     }
-    private void ButtonActivateUpdate()
+    private void OnClickContinueRecord()
     {
-        RecordStart.gameObject.SetActive(!IsStarted);
-        RecordStop.gameObject.SetActive(IsStarted);
+        IsStarted = true;
     }
 
 }
