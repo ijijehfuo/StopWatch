@@ -14,13 +14,14 @@ public enum Phase
 
 public class TimeButton : MonoBehaviour
 {
-    public Phase StopWatchPhase;
+    
     public Text TimeText;
     public Text RecordedTime;
     public Button LeftButton;
     public Text LeftButtonTxt;
     public Button RightButton;
     public Text RightButtonTxt;
+    public ScrollRect ScrollRect;
     private string Timestring;
     private float time = 0f;
     private bool IsStarted;
@@ -28,6 +29,7 @@ public class TimeButton : MonoBehaviour
     void Start()
     {
         
+        UpdateUI(Phase.start);
     }
 
     void Update()
@@ -43,49 +45,79 @@ public class TimeButton : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
+    private void UpdateUI(Phase StopWatchPhase)
     {
         switch(StopWatchPhase)
         {
             case Phase.start:
-                RightButtonTxt.text = "Start";
-                LeftButtonTxt.text = "Record";
-                RightButton.onClick.RemoveAllListeners();
-                LeftButton.onClick.RemoveAllListeners();
+                // 앱 최초진입시 설정
+                UpdateButtonText("Start", "Record");
+                UpdateButtonColor(Color.blue, Color.gray);
+                ResetListeners();
                 RightButton.onClick.AddListener(OnClickRecordStart);
                 break;
             case Phase.AfterPressingStartBtn:
-
-                break;
-            case Phase.AfterPressingRecordBtn:
+                //Todo: rightbutton: start->stop, stop누르면 시간멈춤, record addlistener, record 누르면 기록 추가
+                UpdateButtonText("Stop", "Record");
+                UpdateButtonColor(Color.red, Color.white);
+                ResetListeners();
+                RightButton.onClick.AddListener(OnClickRecordStop);
+                LeftButton.onClick.AddListener(OnClickIntervalRecord);
                 break;
             case Phase.AfterPressingStopBtn:
+                //Todo: RightButton: stop->Continue, LeftButton: Record-> Reset
+                UpdateButtonText("Continue", "Reset");
+                UpdateButtonColor(Color.blue, Color.white);
+                ResetListeners();
+                RightButton.onClick.AddListener(OnClickContinueRecord);
+                LeftButton.onClick.AddListener(OnClickRecordClear);
                 break;
 
         }
     }
     private void OnClickRecordStart()
     {
+        UpdateUI(Phase.AfterPressingStartBtn);
         IsStarted = true;
     }
     private void OnClickRecordStop()
     {
+        UpdateUI(Phase.AfterPressingStopBtn);
         IsStarted = false;
     }
-    private void OnClickInervalRecord()
+    private void OnClickIntervalRecord()
     {
         RecordedTime.text += "\n" + TimeText.text;
+        ScrollRect.verticalNormalizedPosition = 0f;
     }
     private void OnClickRecordClear()
     {
-        OnClickRecordStop();
+        IsStarted = false;
+        UpdateUI(Phase.start);
         time = 0f;
         TimeText.text = "00:00.00";
         RecordedTime.text = "";
     }
     private void OnClickContinueRecord()
     {
+        UpdateUI(Phase.AfterPressingStartBtn);
         IsStarted = true;
+    }
+
+    private void ResetListeners()
+    {
+        RightButton.onClick.RemoveAllListeners();
+        LeftButton.onClick.RemoveAllListeners();
+    }
+    private void UpdateButtonColor(Color RightButtonColor, Color LeftButtonColor)
+    {
+        RightButton.GetComponent<Image>().color = RightButtonColor;
+        LeftButton.GetComponent<Image>().color = LeftButtonColor;
+    }
+    private void UpdateButtonText(string RightButtonText, string LeftButtonText)
+    {
+        RightButtonTxt.text = RightButtonText;
+        LeftButtonTxt.text = LeftButtonText;
     }
 
 }

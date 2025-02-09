@@ -247,10 +247,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimeText: {fileID: 364217876}
   RecordedTime: {fileID: 1818083985}
-  RecordStart: {fileID: 443131782}
-  RecordStop: {fileID: 0}
-  IntervalRecord: {fileID: 0}
-  RecordClear: {fileID: 674604172}
+  LeftButton: {fileID: 674604172}
+  LeftButtonTxt: {fileID: 560712427}
+  RightButton: {fileID: 443131782}
+  RightButtonTxt: {fileID: 970712903}
+  ScrollRect: {fileID: 964872086}
 --- !u!114 &345073381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1663,7 +1664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.42745098}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
