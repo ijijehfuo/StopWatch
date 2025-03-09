@@ -9,6 +9,11 @@ public class GlobalTimeSlot : MonoBehaviour
     public Text TimeDiff;
     public Text CurrentTime;
 
+    private void UpdateUI(string Countryname, int Timediff)
+    {
+        CountryName.text = Countryname;
+
+    }
     void Start()
     {
         

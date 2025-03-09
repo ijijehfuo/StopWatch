@@ -27,7 +27,7 @@ public class PopupCountrySelect : MonoBehaviour
         
     }
 
-    private void OnClickExitButton()
+    public void OnClickExitButton()
     {
         GameObject.Destroy(this.gameObject);
     }

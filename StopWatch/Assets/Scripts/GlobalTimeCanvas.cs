@@ -15,10 +15,11 @@ public class GlobalTimeCanvas : MonoBehaviour
     public Text KoreanTimezoneText;
     public ScrollRect TimezoneList;
     public Button AddTimezoneButton;
+    public Transform GlobalTimeSlotParent;
 
     void Start()
     {
-        
+        AddTimezoneButton.onClick.AddListener(OnClickAddTimezoneButton);
     }
 
     // Update is called once per frame
@@ -56,4 +57,17 @@ public class GlobalTimeCanvas : MonoBehaviour
 
         }
     }
+
+    private void OnClickAddTimezoneButton()
+    {
+        Resources.Load<GameObject>("PopupCountrySelect");
+        GameObject.Instantiate(Resources.Load<GameObject>("PopupCountrySelect"));
+    }
+
+    public void InstantiateSlot(string CountryName, int TimeDiff)
+    {
+        //슬롯 만들기, 팝업
+        Debug.Log(CountryName + TimeDiff);
+    }
+
 }
